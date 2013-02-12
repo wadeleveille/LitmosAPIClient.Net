@@ -6,8 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 using LitmosRESTClientSample.Models;
-using Litmos.RESTClient;
-using Litmos.RESTClient.Resources;
+using Litmos.API;
+using Litmos.API.Resources;
 
 namespace LitmosRESTClientSample.Controllers
 {
@@ -29,8 +29,8 @@ namespace LitmosRESTClientSample.Controllers
             // Base uri
             string baseUri = ConfigurationManager.AppSettings["LitmosAPIBaseUri"].ToString();
 
-            APIResponse rs = new APIResponse();
-            APIClient client = new APIClient(baseUri, request.ApiKey, request.Source);
+            RESTResponse rs = new RESTResponse();
+            RESTClient client = new RESTClient(baseUri, request.ApiKey, request.Source);
 
             switch (request.RequestType)
             {
@@ -52,13 +52,7 @@ namespace LitmosRESTClientSample.Controllers
 
                 case "CREATE_USER": // Create a User
 
-                    UserProfile createUser = new UserProfile()
-                    {
-                        FirstName = Request.Form["FirstName"],
-                        LastName = Request.Form["LastName"],
-                        UserName = Request.Form["UserName"],
-                        Skype = "skype123"
-                    };
+                    UserProfile createUser = new UserProfile(Request.Form["UserName"], Request.Form["FirstName"], Request.Form["LastName"]);
 
                     // Create
                     rs = client.Post<UserProfile>(RequestUri.USERS, createUser);
