@@ -32,7 +32,12 @@
                 <option value="USER">Get User</option>             
                 <option value="CREATE_USER">Create User</option>                   
                 <option value="UPDATE_USER">Update User</option>                    
-                <option value="TEAMS">Get Teams</option>                    
+                <option value="TEAMS">Get Teams</option>  
+                <option value="SUBTEAMS">Get Sub Teams</option>  
+                <option value="TEAMUSERS">Get Team Users</option>  
+                <option value="ADD_TEAMUSERS">Add User to Team</option> 
+                <option value="PROMOTE_LEADER">Promote Teamleader</option> 
+                <option value="DEMOTE_LEADER">Demote Teamleader</option>                                                    
             </select>
         </td>
     </tr>
@@ -45,9 +50,21 @@
         <td>For get and update</td>
     </tr>    
     <tr>
+        <th>Search Filter:</th>
+        <td>
+            <% =Html.TextBox("Filter") %>
+        </td>
+    </tr>
+    <tr>
         <th>UserId:</th>
         <td>
             <% =Html.TextBox("UserId") %>
+        </td>
+    </tr>
+    <tr>
+        <th>TeamId:</th>
+        <td>
+            <% =Html.TextBox("TeamId") %>
         </td>
     </tr>
     <tr>

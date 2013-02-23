@@ -47,6 +47,18 @@ namespace Litmos.API
         }
 
         /// <summary>
+        /// Create a new resource. No response body expected.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="requestUri"></param>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public RESTResponse Post(string requestUri, object body)
+        {
+            return GetResponse(_client.Post(GetUri(requestUri), body));
+        }
+
+        /// <summary>
         /// Update a resource
         /// </summary>
         /// <param name="requestUri"></param>
@@ -60,10 +72,9 @@ namespace Litmos.API
         /// <summary>
         /// Delete a resource
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="requestUri"></param>
         /// <returns></returns>
-        public RESTResponse Delete<T>(string requestUri)
+        public RESTResponse Delete(string requestUri)
         {
             return GetResponse(_client.Delete(GetUri(requestUri)));
         }
@@ -80,7 +91,7 @@ namespace Litmos.API
             rs.StatusCode = ((int)_client.GetStatusCode(msg)).ToString();
             rs.StatusDescription = _client.GetStatusDescription(msg);
             rs.Body = msg.GetBody<T>();
-
+            
             return rs;
         }
 

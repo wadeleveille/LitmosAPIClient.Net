@@ -31,23 +31,24 @@ namespace LitmosRESTClientSample.Controllers
 
             RESTResponse rs = new RESTResponse();
             RESTClient client = new RESTClient(baseUri, request.ApiKey, request.Source);
+            RequestFactory factory = new RequestFactory(baseUri, request.ApiKey, request.Source);
 
             switch (request.RequestType)
             {
                 case "USERS": // Get a List of Users
                     // Get
-                    rs = client.Get<UserList>(RequestUri.USERS);
+                    var listUsers = factory.ListUsers(Request.Form["Filter"]);
 
                     // Format Response
-                    request.ResponseBody = GetUserList(rs.Body);
+                    request.ResponseBody = GetUserList(listUsers);
                     break;
 
                 case "USER": // Get a User
                     // Get
-                    rs = client.Get<UserProfile>(string.Format(RequestUri.USER, Request.Form["UserId"]));
+                    var singleUser = factory.GetUser(Request.Form["UserId"]);
 
                     // Format Response
-                    request.ResponseBody = GetUser(rs.Body);
+                    request.ResponseBody = GetUser(singleUser);
                     break;
 
                 case "CREATE_USER": // Create a User
@@ -55,40 +56,75 @@ namespace LitmosRESTClientSample.Controllers
                     UserProfile createUser = new UserProfile(Request.Form["UserName"], Request.Form["FirstName"], Request.Form["LastName"]);
 
                     // Create
-                    rs = client.Post<UserProfile>(RequestUri.USERS, createUser);
+                    var newUser = factory.CreateUser(createUser);
 
                     // Format Response
-                    request.ResponseBody = GetUser(rs.Body);
+                    request.ResponseBody = GetUser(newUser);
                     break;
 
                 case "UPDATE_USER": // Update a User
 
-                    string userUri = string.Format(RequestUri.USER, Request.Form["UserId"]);
-                    UserProfile updateUser;
-
                     // Get User
-                    rs = client.Get<UserProfile>(userUri);
+                    var updateUser = factory.GetUser(Request.Form["UserId"]);
 
                     // Update User Properties
-                    if (rs != null)
+                    if (updateUser != null)
                     {
-                        updateUser = (UserProfile)rs.Body;
-
                         updateUser.Id = Request.Form["UserId"];
                         updateUser.FirstName = Request.Form["FirstName"];
                         updateUser.LastName = Request.Form["LastName"];
 
                         // Update 
-                        rs = client.Put(userUri, updateUser);
+                        updateUser = factory.UpdateUser(Request.Form["UserId"], updateUser);
                     }
                     break;
 
                 case "TEAMS": // Get a List of Teams
+                    request.ResponseBody = GetTeamList(factory.ListTeams(Request.Form["Filter"]));
+                    break;
+
+                case "SUBTEAMS": // Get a List of sub Teams
                     // Get
-                    rs = client.Get<TeamList>(RequestUri.TEAMS);
+                    var subTeams = factory.ListTeams(Request.Form["TeamId"], Request.Form["Filter"]);
 
                     // Format Response
-                    request.ResponseBody = GetTeamList(rs.Body);
+                    request.ResponseBody = GetTeamList(subTeams);
+                    break;
+
+                case "ADD_TEAMUSERS": // Get a List of Teams
+                    
+                    var users = new UserList();
+
+                    users.Add(new UserProfilePartial(){
+                        Id = Request.Form["UserId"]
+                    });
+
+                    var userTeamSuccess = factory.AddUsersToTeam(Request.Form["TeamId"], users);
+
+                    // Format Response
+                    request.ResponseBody = userTeamSuccess ? "Users added to team!" : "Users to team FAILED";
+                    break;
+
+                case "TEAMUSERS": // Get a List of Users
+                    // Get
+                    var listTeamUsers = factory.ListTeamUsers(Request.Form["TeamId"]);
+
+                    // Format Response
+                    request.ResponseBody = GetUserList(listTeamUsers);
+                    break;
+
+                case "PROMOTE_LEADER":
+                    var promoteLeader = factory.PromoteTeamLeader(Request.Form["TeamId"], Request.Form["UserId"]);
+
+                    // Format Response
+                    request.ResponseBody = promoteLeader ? "Users promoted to team leader!" : "Users to team FAILED";
+                    break;
+
+                case "DEMOTE_LEADER":
+                    var demoteTeamLeader = factory.DemoteTeamLeader(Request.Form["TeamId"], Request.Form["UserId"]);
+
+                    // Format Response
+                    request.ResponseBody = demoteTeamLeader ? "Users demoted from team leader!" : "Users to team FAILED";
                     break;
             }
 
