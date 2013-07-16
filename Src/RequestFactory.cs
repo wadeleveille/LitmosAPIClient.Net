@@ -15,11 +15,14 @@ namespace Litmos.API
         private static class Endpoints
         {
             // Courses
-            public const string COURSES = "/users";
+            public const string COURSES = "/courses";
 
             // Users
             public const string USERS = "/users?search={0}";
             public const string USER = "/users/{0}";
+
+            // User Courses
+            public const string USER_COURSES = "/users/{0}/courses";
 
             // Teams
             public const string TEAMS = "/teams?search={0}";
@@ -162,6 +165,34 @@ namespace Litmos.API
 
             // Format Response
             return (promote.StatusCode == "200");
+        }
+
+        /// <summary>
+        /// Get a list of courses
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public CourseList ListCourses()
+        {
+            // Create
+            var rs = this.Get<CourseList>(Endpoints.COURSES);
+
+            // Format Response
+            return (CourseList)rs.Body;
+        }
+
+        /// <summary>
+        /// Get a list of courses assigned to user
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
+        public UserCourseList ListUserCourses(string userId)
+        {
+            // Create
+            var rs = this.Get<UserCourseList>(string.Format(Endpoints.USER_COURSES, userId));
+
+            // Format Response
+            return (UserCourseList)rs.Body;
         }
     }
 }

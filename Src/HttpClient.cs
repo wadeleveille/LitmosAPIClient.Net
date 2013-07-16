@@ -16,6 +16,7 @@ namespace Litmos.API
         public HttpClient( Uri baseUri, bool keepAliveEnabled ) : base( HttpClient.CreatePoxBinding( baseUri, keepAliveEnabled ), 
                                                                            new EndpointAddress( baseUri ) )
         {
+           
         }
 
         public Message Request( Uri requestUri, string httpMethod )
@@ -109,6 +110,7 @@ namespace Litmos.API
 
             transport.ManualAddressing = true;
             transport.KeepAliveEnabled = keepAliveEnabled;
+            transport.MaxReceivedMessageSize = 2000000;
 
             return new CustomBinding(new BindingElement[] { encoder, transport });
         }

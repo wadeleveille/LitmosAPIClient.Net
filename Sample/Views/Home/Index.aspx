@@ -36,8 +36,10 @@
                 <option value="SUBTEAMS">Get Sub Teams</option>  
                 <option value="TEAMUSERS">Get Team Users</option>  
                 <option value="ADD_TEAMUSERS">Add User to Team</option> 
-                <option value="PROMOTE_LEADER">Promote Teamleader</option> 
-                <option value="DEMOTE_LEADER">Demote Teamleader</option>                                                    
+                <option value="PROMOTE_LEADER">Promote Teamleader</option>
+                <option value="DEMOTE_LEADER">Demote Teamleader</option>
+                <option value="COURSES">Get Courses</option>                                                    
+                <option value="USER_COURSES">Get Courses Assigned to User</option>                                                    
             </select>
         </td>
     </tr>

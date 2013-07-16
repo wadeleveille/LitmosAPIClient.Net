@@ -121,8 +121,8 @@ namespace Litmos.API
             {
                 uri = _baseUri
                     + uri
-                    + (uri.Contains("?") ? string.Format("&apikey={0}&source={1}", _apikey, _source)
-                        : string.Format("?apikey={0}&source={1}", _apikey, _source));
+                    + (uri.Contains("?") ? string.Format("&apikey={0}&source={1}&start=0&limit=10000", _apikey, _source)
+                        : string.Format("?apikey={0}&source={1}&start=0&limit=10000", _apikey, _source));
 
                 return new Uri(uri);
             }

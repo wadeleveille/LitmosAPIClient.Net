@@ -61,10 +61,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RequestFactory.cs" />
+    <Compile Include="Resources\Course.cs" />
+    <Compile Include="Resources\CourseList.cs" />
     <Compile Include="Resources\TeamList.cs" />
     <Compile Include="Resources\ListResource.cs" />
     <Compile Include="Resources\TeamPartial.cs" />
     <Compile Include="Resources\Team.cs" />
+    <Compile Include="Resources\UserCourse.cs" />
+    <Compile Include="Resources\UserCourseList.cs" />
     <Compile Include="Resources\UserList.cs" />
     <Compile Include="Resources\UserProfilePartial.cs" />
     <Compile Include="RESTClient.cs" />

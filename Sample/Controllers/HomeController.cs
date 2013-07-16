@@ -126,6 +126,22 @@ namespace LitmosRESTClientSample.Controllers
                     // Format Response
                     request.ResponseBody = demoteTeamLeader ? "Users demoted from team leader!" : "Users to team FAILED";
                     break;
+
+                case "COURSES": // Get a List of Courses
+                    // Get
+                    var listCourses = factory.ListCourses();
+
+                    // Format Response
+                    request.ResponseBody = GetCourseList(listCourses);
+                    break;
+
+                case "USER_COURSES": // Get a List of Courses
+                    // Get
+                    var listUserCourses = factory.ListUserCourses(Request.Form["UserId"]);
+
+                    // Format Response
+                    request.ResponseBody = GetUserCourseList(listUserCourses);
+                    break;
             }
 
 
@@ -184,6 +200,34 @@ namespace LitmosRESTClientSample.Controllers
                 u.LoginKey);
         }
 
+        /// <summary>
+        /// Convert message body to list of courses
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public string GetCourseList(object body)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var u in (CourseList)body)
+            {
+                sb.AppendFormat("Id: {0} - Name: {1} - Description: {2}<br/>", u.Id, u.Name, u.Description);
+            }
+            return sb.ToString();
+        }
 
+        /// <summary>
+        /// Convert message body to list of courses assigned to user
+        /// </summary>
+        /// <param name="body"></param>
+        /// <returns></returns>
+        public string GetUserCourseList(object body)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var u in (UserCourseList)body)
+            {
+                sb.AppendFormat("Id: {0} - Name: {1} - Complete: {2} - Date Complete: {3}<br/>", u.Id, u.Name, u.Complete, u.DateCompleted);
+            }
+            return sb.ToString();
+        }
     }
 }
